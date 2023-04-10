@@ -1,15 +1,22 @@
-// 試し関数その１
-export const hoge = () => {
-  const a = 'あっぱれ';
-  return a;
-};
+// open-aiのAPIアクセスキーを設置
+import {OPENAI_API_KEY} from "~/composables/apikey";
 
-// 試し関数その２
-// ここではサンプルとして海上保安庁が無料公開しているAPIを取得している（岩手県の海上データを取得しています）
-export async function getHoantyoData() {
-  const { data, error } = await useFetch('https://tide736.net/api/get_tide.php/?pc=3&hc=7&yr=2023&mn=3&dy=31&rg=day', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  return data;
+export async function postAPI() {
+    const text = 'Hello, how are you?';
+    const {data, error} = await useFetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ` + OPENAI_API_KEY
+        },
+        body: {
+            prompt: text,
+            max_tokens: 60,
+            n: 1,
+            stop: ['\n']
+        }
+    });
+    console.log(data)
+    console.error(error)
+    return data;
 }
